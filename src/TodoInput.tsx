@@ -12,12 +12,13 @@ const TodoInput = ({onAddTodo}: TodoInputProps) => {
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             const id = uuid();
-            onAddTodo({id, content});
+            onAddTodo({id, content, completed: false});
             setContent('');
         }
     }
     return (
         <input
+            className="todo-input"
             type='text'
             data-testid="todo-input"
             value={content}
