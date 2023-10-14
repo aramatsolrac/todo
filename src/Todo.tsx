@@ -2,10 +2,11 @@ import { TodoList } from './TodoList';
 import { TodoInput } from './TodoInput';
 import { useTodos } from './useTodos';
 import './Todo.css';
+import { TodoType } from './types';
 
 
-const Todo = () => {
-    const {todos, addTodo, toggleItem, deleteItem} = useTodos();
+const Todo = ({items}: {items?: TodoType[]}) => {
+    const {todos, addTodo, toggleItem, deleteItem} = useTodos(items);
 
     return (
     <div className='todo-container'>

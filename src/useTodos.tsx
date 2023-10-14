@@ -1,8 +1,9 @@
 import { useState }  from 'react';
 import { TodoType } from './types';
 
-const useTodos = () => {
-    const [todos, setTodos] = useState<TodoType[]>([]);
+
+const useTodos = (items: TodoType[] = []) => {
+    const [todos, setTodos] = useState<TodoType[]>(items);
 
     const addTodo = (todo: TodoType) => {
         setTodos([todo, ...todos]);
