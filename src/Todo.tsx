@@ -1,34 +1,20 @@
-import { useState }  from 'react';
-import { TodoType } from './types';
 import { TodoList } from './TodoList';
 import { TodoInput } from './TodoInput';
+import { useTodos } from './useTodos';
 import './Todo.css';
 
 
 const Todo = () => {
-    const [todos, setTodos] = useState<TodoType[]>([]);
-
-    const onAddTodo = (todo: TodoType) => {
-        setTodos([todo, ...todos]);
-    }
-
-    const onToggleItem = (id: string) => {
-        const updatedTodos = todos.map(todo => {
-            if (todo.id === id) {
-                return {...todo, completed: !todo.completed};
-            }
-            return todo;
-        });
-        setTodos(updatedTodos);
-    }
+    const {todos, addTodo, toggleItem, deleteItem} = useTodos();
 
     return (
     <div className='todo-container'>
         <h2 className='todo-header'>Todos</h2>
-        <TodoInput onAddTodo={onAddTodo} />
+        <TodoInput onAddTodo={addTodo} />
         <TodoList
             todos={todos}
-            onToggleItem={onToggleItem}
+            onToggleItem={toggleItem}
+            onDeleteItem={deleteItem}
         />
     </div>
   );
