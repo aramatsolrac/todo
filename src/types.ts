@@ -34,4 +34,5 @@ export interface TodoListProps {
      * @param id The id of the todo item.
      */
     onToggleItem: (id: string) => void;
+    onDeleteItem: (todo: TodoType) => void;
 }
