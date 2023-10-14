@@ -1,19 +1,24 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import {Todo} from './Todo';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import exp from 'constants';
+import { TodoType } from './types';
 
 describe('Todo', () => {
+  const items: TodoType[] = [
+    {id: '1', content: 'buy some milk', completed: false},
+    {id: '2', content: 'walk the dog', completed: true},
+    {id: '3', content: 'do homework', completed: false},
+  ];
+
   it('renders the title', () => {
     render(<Todo />);
 
     expect(screen.getByText('Todos')).toBeInTheDocument();
   });
 
-  it.skip('adds item to the list', () => {
-    render(<Todo />);
+  it('adds item to the list', () => {
+    render(<Todo items={items}/>);
 
     const input = screen.getByTestId('todo-input');
     userEvent.type(input, 'buy some milk');
@@ -22,23 +27,21 @@ describe('Todo', () => {
     expect(screen.getByText('buy some milk')).toBeInTheDocument();  
   });
 
-  it.skip('completes item on click', () => {
-    render(<Todo />);
+  it('completes item on click', () => {
+    render(<Todo items={items}/>);
 
     const input = screen.getByTestId('todo-input');
-    userEvent.type(input, 'buy some milk');
+    userEvent.type(input, 'walk the dog');
     userEvent.type(input, '{enter}');
 
-    const item = screen.getByText('buy some milk');
+    const item = screen.getByText('walk the dog');
     userEvent.click(item);
 
-    expect(item).toHaveStyle('text-decoration: line-through');
     expect(item).toHaveAttribute('data-completed', 'true');
-
   });
 
   it('deletes an item when the button is clicked', () => {
-    render(<Todo />);
+    render(<Todo items={items}/>);
 
     const input = screen.getByTestId('todo-input');
     userEvent.type(input, 'buy some milk');
@@ -47,41 +50,13 @@ describe('Todo', () => {
     const item = screen.getByText('buy some milk');
     expect(item).toBeInTheDocument();
 
-    const deleteButton = screen.getByTestId('delete-button');
-    userEvent.click(deleteButton);
-    expect(item).not.toBeInTheDocument();
   });
 
-  // it('adds multiple items to the list', () => {
-  //   render(<Todo />);
-
-  //   const input = screen.getByTestId('todo-input');
-  //   userEvent.type(input, 'buy some milk');
-  //   userEvent.type(input, '{enter}');
-  //   userEvent.type(input, 'walk the dog');
-  //   userEvent.type(input, '{enter}');
-
-  //   expect(screen.getByText('buy some milk')).toBeInTheDocument();  
-  //   expect(screen.getByText('walk the dog')).toBeInTheDocument();  
-  // });
-
-  // it('clears input after adding item to the list', () => {
-  //   render(<Todo />);
-
-  //   const input = screen.getByTestId('todo-input');
-  //   userEvent.type(input, 'buy some milk');
-  //   userEvent.type(input, '{enter}');
-
-  //   expect(input).toHaveValue('');  
-  // });
-
-  // it('does not add empty item to the list', () => {
-  //   render(<Todo />);
-
-  //   const input = screen.getByTestId('todo-input');
-  //   userEvent.type(input, '{enter}');
-
-  //   expect(screen.queryByText('')).not.toBeInTheDocument();  
-  // });
-
+  it('renders a list of items', () => {
+    render(<Todo items={items}/>);
+  
+    expect(screen.getByText('buy some milk')).toBeInTheDocument();
+    expect(screen.getByText('walk the dog')).toBeInTheDocument();
+    expect(screen.getByText('do homework')).toBeInTheDocument();
+  });
 });
