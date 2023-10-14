@@ -37,4 +37,51 @@ describe('Todo', () => {
 
   });
 
+  it('deletes an item when the button is clicked', () => {
+    render(<Todo />);
+
+    const input = screen.getByTestId('todo-input');
+    userEvent.type(input, 'buy some milk');
+    userEvent.type(input, '{enter}');
+
+    const item = screen.getByText('buy some milk');
+    expect(item).toBeInTheDocument();
+
+    const deleteButton = screen.getByTestId('delete-button');
+    userEvent.click(deleteButton);
+    expect(item).not.toBeInTheDocument();
+  });
+
+  // it('adds multiple items to the list', () => {
+  //   render(<Todo />);
+
+  //   const input = screen.getByTestId('todo-input');
+  //   userEvent.type(input, 'buy some milk');
+  //   userEvent.type(input, '{enter}');
+  //   userEvent.type(input, 'walk the dog');
+  //   userEvent.type(input, '{enter}');
+
+  //   expect(screen.getByText('buy some milk')).toBeInTheDocument();  
+  //   expect(screen.getByText('walk the dog')).toBeInTheDocument();  
+  // });
+
+  // it('clears input after adding item to the list', () => {
+  //   render(<Todo />);
+
+  //   const input = screen.getByTestId('todo-input');
+  //   userEvent.type(input, 'buy some milk');
+  //   userEvent.type(input, '{enter}');
+
+  //   expect(input).toHaveValue('');  
+  // });
+
+  // it('does not add empty item to the list', () => {
+  //   render(<Todo />);
+
+  //   const input = screen.getByTestId('todo-input');
+  //   userEvent.type(input, '{enter}');
+
+  //   expect(screen.queryByText('')).not.toBeInTheDocument();  
+  // });
+
 });
