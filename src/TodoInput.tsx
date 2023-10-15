@@ -21,6 +21,7 @@ const TodoInput = ({onAddTodo}: TodoInputProps) => {
             className="todo-input"
             type='text'
             data-testid="todo-input"
+            placeholder="Add a todo..."
             value={content}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
