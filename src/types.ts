@@ -1,3 +1,6 @@
+import { type } from "os";
+import { Category } from "./Category";
+
 /**
  * Represents a todo item.
  */
@@ -35,4 +38,23 @@ export interface TodoListProps {
      */
     onToggleItem: (id: string) => void;
     onDeleteItem: (todo: TodoType) => void;
+}
+
+
+export interface CategoryProps {
+    label: string;
+    number: number;
+    type: string;
+    switchCategory: (label: string) => void;
+}
+
+export interface CategoryType {
+    total: number;
+    completed: number;
+    active : number;
+}
+
+export interface CategoryListProps {
+    categories: CategoryType;
+    switchCategory: (label: string) => void;
 }
