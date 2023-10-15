@@ -7,8 +7,9 @@ const TodoList = ({todos, onToggleItem, onDeleteItem}: TodoListProps) => {
             <div
                 key={todo.id}
                 className="todo-item-container"
+                data-testid="todo-item"
             >
-            <span 
+            <span
                 className="todo-item"
                 onClick={() => onToggleItem(todo.id)}
                 data-completed={todo.completed}>

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { TodoType } from './types';
 import {Todo} from './Todo';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import { TodoType } from './types';
 
 describe('Todo', () => {
   const items: TodoType[] = [
@@ -17,46 +17,74 @@ describe('Todo', () => {
     expect(screen.getByText('Todos')).toBeInTheDocument();
   });
 
-  it('adds item to the list', () => {
-    render(<Todo items={items}/>);
+  it('adds item to the list', async () => {
+    render(<Todo />);
 
     const input = screen.getByTestId('todo-input');
-    userEvent.type(input, 'buy some milk');
-    userEvent.type(input, '{enter}');
+    await userEvent.type(input, 'buy some milk');
+    await userEvent.type(input, '{enter}');
 
-    expect(screen.getByText('buy some milk')).toBeInTheDocument();  
+    expect(screen.getByText('buy some milk')).toBeInTheDocument();
   });
 
-  it('completes item on click', () => {
+  it('completes item on click', async () => {
     render(<Todo items={items}/>);
 
     const input = screen.getByTestId('todo-input');
     userEvent.type(input, 'walk the dog');
     userEvent.type(input, '{enter}');
 
-    const item = screen.getByText('walk the dog');
-    userEvent.click(item);
-
+    const item = screen.getByText('buy some milk');
+    await userEvent.click(item);
     expect(item).toHaveAttribute('data-completed', 'true');
   });
 
-  it('deletes an item when the button is clicked', () => {
-    render(<Todo items={items}/>);
+  it('deletes an item when the button is clicked', async () => {
+    render(<Todo />);
 
     const input = screen.getByTestId('todo-input');
-    userEvent.type(input, 'buy some milk');
-    userEvent.type(input, '{enter}');
+    await userEvent.type(input, 'buy some milk');
+    await userEvent.type(input, '{enter}');
 
     const item = screen.getByText('buy some milk');
     expect(item).toBeInTheDocument();
-
   });
 
   it('renders a list of items', () => {
     render(<Todo items={items}/>);
-  
+
     expect(screen.getByText('buy some milk')).toBeInTheDocument();
     expect(screen.getByText('walk the dog')).toBeInTheDocument();
     expect(screen.getByText('do homework')).toBeInTheDocument();
+  });
+
+  it('render different groups of items', async () => {
+    render(<Todo items={items}/>);
+
+    const todoItems = screen.getAllByTestId('todo-item');
+    expect(todoItems.length).toEqual(items.length);
+
+    const completedTab = screen.getByTestId('todo-completed');
+    await userEvent.click(completedTab);
+    expect(screen.getAllByTestId('todo-item').length).toEqual(1);
+  });
+
+  it('switches between groups of items', async () => {
+    render(<Todo items={items}/>);
+
+    const todoItems = screen.getAllByTestId('todo-item');
+    expect(todoItems.length).toEqual(items.length);
+
+    const totalTab = screen.getByTestId('todo-total');
+    await userEvent.click(totalTab);
+    expect(screen.getAllByTestId('todo-item').length).toEqual(3);
+  });
+
+  it('renders active tab', async () => {
+    render(<Todo items={items}/>);
+
+    const activeTab = screen.getByTestId('todo-active');
+    await userEvent.click(activeTab);
+    expect(screen.getAllByTestId('todo-item').length).toEqual(2);
   });
 });
