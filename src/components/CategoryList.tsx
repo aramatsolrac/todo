@@ -1,5 +1,5 @@
 import { Category } from './Category';
-import { CategoryListProps } from './types';
+import { CategoryListProps } from '../types/types';
 
 export const CategoryList = ({ categories, switchCategory }: CategoryListProps) => {
     return (

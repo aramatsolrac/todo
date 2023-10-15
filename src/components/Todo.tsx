@@ -1,10 +1,10 @@
 import { TodoList } from './TodoList';
-import { TodoInput } from './TodoInput';
-import { useTodos } from './useTodos';
-import { TodoType } from './types';
+import { useTodos } from '../hooks/useTodos';
+import { TodoType } from '../types/types';
 import { CategoryList } from './CategoryList';
-import './Todo.css';
+import '../styles/Todo.css';
 import { SearchInput } from './SearchInput';
+import { TodoInput } from './TodoInput';
 
 const Todo = ({ items }: { items?: TodoType[]; }) => {
     const {
@@ -20,7 +20,7 @@ const Todo = ({ items }: { items?: TodoType[]; }) => {
 
     return (
         <div className='todo-container'>
-            <h2 className='todo-header'>Todos</h2>
+            <h1 className='todo-header'>Todos</h1>
             <TodoInput onAddTodo={addTodo} />
             <SearchInput onSearch={search} />
             <CategoryList

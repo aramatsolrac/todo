@@ -1,5 +1,5 @@
 import { Todo } from './Todo';
-import { TodoType } from './types';
+import { TodoType } from '../types/types';
 
 const items: TodoType[] = [
   {id: '1', content: 'buy some milk', completed: false},
@@ -8,7 +8,7 @@ const items: TodoType[] = [
 ];
 
 function App() {
-  
+
   return (
     <div >
       <Todo items={items}/>

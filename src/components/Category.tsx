@@ -1,4 +1,4 @@
-import {CategoryProps} from './types';
+import {CategoryProps} from '../types/types';
 
 export const Category = ({ label, number, type, switchCategory }: CategoryProps) => {
     return (

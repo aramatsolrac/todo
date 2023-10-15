@@ -1,6 +1,6 @@
-import { getAllByTestId, render, screen, within } from '@testing-library/react';
-import { TodoType } from './types';
-import { Todo } from './Todo';
+import { render, screen, within } from '@testing-library/react';
+import { TodoType } from '../types/types';
+import { Todo } from '../components/Todo';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
@@ -129,7 +129,6 @@ describe('Search', () => {
     expect(screen.queryByText('do homework')).not.toBeInTheDocument();
     expect(screen.getAllByTestId('todo-item').length).toEqual(1);
   });
-
 });
 
 

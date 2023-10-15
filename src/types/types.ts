@@ -1,5 +1,5 @@
 import { type } from "os";
-import { Category } from "./Category";
+import { Category } from "../components/Category";
 
 /**
  * Represents a todo item.

@@ -1,4 +1,4 @@
-import {TodoListProps, TodoType} from './types';
+import {TodoListProps, TodoType} from '../types/types';
 
 const TodoList = ({todos, onToggleItem, onDeleteItem}: TodoListProps) => {
     return (
