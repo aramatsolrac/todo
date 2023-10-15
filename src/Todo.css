@@ -61,6 +61,14 @@
     border-color: #333;
 }
 
+.todo-input::placeholder {
+    color: #ccc;
+}
+
+.todo-input.search {
+    margin-top: .5rem;
+}
+
 
 .delete-button {
     background: url("https://img.icons8.com/material-rounded/24/000000/delete-trash.png") no-repeat center center;
@@ -107,4 +115,15 @@
 
 .categories-container .button:hover {
     background-color: #f5f5f5;
+}
+
+.todo-search {
+    width: -webkit-fill-available;
+    padding: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
 }
