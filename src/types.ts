@@ -58,3 +58,8 @@ export interface CategoryListProps {
     categories: CategoryType;
     switchCategory: (label: string) => void;
 }
+
+
+export interface SearchInputProps {
+    onSearch: (search: string) => void;
+}
