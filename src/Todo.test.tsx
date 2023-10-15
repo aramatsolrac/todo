@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { TodoType } from './types';
-import {Todo} from './Todo';
+import { Todo } from './Todo';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
@@ -36,6 +36,7 @@ describe('Todo', () => {
 
     const item = screen.getByText('buy some milk');
     await userEvent.click(item);
+
     expect(item).toHaveAttribute('data-completed', 'true');
   });
 
@@ -47,6 +48,7 @@ describe('Todo', () => {
     await userEvent.type(input, '{enter}');
 
     const item = screen.getByText('buy some milk');
+
     expect(item).toBeInTheDocument();
   });
 
@@ -66,6 +68,7 @@ describe('Todo', () => {
 
     const completedTab = screen.getByTestId('todo-completed');
     await userEvent.click(completedTab);
+
     expect(screen.getAllByTestId('todo-item').length).toEqual(1);
   });
 
@@ -77,6 +80,7 @@ describe('Todo', () => {
 
     const totalTab = screen.getByTestId('todo-total');
     await userEvent.click(totalTab);
+  
     expect(screen.getAllByTestId('todo-item').length).toEqual(3);
   });
 
@@ -85,6 +89,28 @@ describe('Todo', () => {
 
     const activeTab = screen.getByTestId('todo-active');
     await userEvent.click(activeTab);
+
     expect(screen.getAllByTestId('todo-item').length).toEqual(2);
+  });
+
+
+  it('show summary information', async () => {
+    render(<Todo items={items}/>);
+
+    const todoItems = screen.getAllByTestId('todo-item');
+    expect(todoItems.length).toEqual(items.length);
+
+    const activeTab = screen.getByTestId('todo-active');
+    await userEvent.click(activeTab);
+
+    const totalTab = screen.getByTestId('todo-total');
+    await userEvent.click(totalTab);
+
+    const completedTab = screen.getByTestId('todo-completed');
+    await userEvent.click(completedTab);
+
+    expect(within(activeTab).getByText('2')).toBeInTheDocument();
+    expect(within(totalTab).getByText('3')).toBeInTheDocument();
+    expect(within(completedTab).getByText('1')).toBeInTheDocument();
   });
 });
