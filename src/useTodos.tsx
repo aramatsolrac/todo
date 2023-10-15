@@ -18,6 +18,13 @@ const useTodos = (items: TodoType[] = []) => {
         }
     }, [todos, category]);
 
+    const categories = useMemo(() => {
+        const completed = todos.filter(todo => todo.completed).length;
+        const active = todos.filter(todo => !todo.completed).length;
+        const total = todos.length;
+        return {completed, active, total};
+    }, [todos]);
+
     const addTodo = (todo: TodoType) => {
         setTodos([todo, ...todos]);
     }
@@ -42,7 +49,8 @@ const useTodos = (items: TodoType[] = []) => {
         addTodo,
         toggleItem,
         deleteItem,
-        setCategory
+        setCategory,
+        categories
     };
 }
 
