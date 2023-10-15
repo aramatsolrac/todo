@@ -1,16 +1,16 @@
-import { render, screen, within } from '@testing-library/react';
+import { getAllByTestId, render, screen, within } from '@testing-library/react';
 import { TodoType } from './types';
 import { Todo } from './Todo';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-describe('Todo', () => {
-  const items: TodoType[] = [
-    {id: '1', content: 'buy some milk', completed: false},
-    {id: '2', content: 'walk the dog', completed: true},
-    {id: '3', content: 'do homework', completed: false},
-  ];
+const items: TodoType[] = [
+  {id: '1', content: 'buy some milk', completed: false},
+  {id: '2', content: 'walk the dog', completed: true},
+  {id: '3', content: 'do homework', completed: false},
+];
 
+describe('Todo', () => {
   it('renders the title', () => {
     render(<Todo />);
 
@@ -59,58 +59,77 @@ describe('Todo', () => {
     expect(screen.getByText('walk the dog')).toBeInTheDocument();
     expect(screen.getByText('do homework')).toBeInTheDocument();
   });
+});
 
-  it('render different groups of items', async () => {
+describe('Categories', () => {
+      it('render different groups of items', async () => {
+        render(<Todo items={items}/>);
+
+        const todoItems = screen.getAllByTestId('todo-item');
+        expect(todoItems.length).toEqual(items.length);
+
+        const completedTab = screen.getByTestId('todo-completed');
+        await userEvent.click(completedTab);
+
+        expect(screen.getAllByTestId('todo-item').length).toEqual(1);
+      });
+
+      it('switches between groups of items', async () => {
+        render(<Todo items={items}/>);
+
+        const todoItems = screen.getAllByTestId('todo-item');
+        expect(todoItems.length).toEqual(items.length);
+
+        const totalTab = screen.getByTestId('todo-total');
+        await userEvent.click(totalTab);
+
+        expect(screen.getAllByTestId('todo-item').length).toEqual(3);
+      });
+
+      it('renders active tab', async () => {
+        render(<Todo items={items}/>);
+
+        const activeTab = screen.getByTestId('todo-active');
+        await userEvent.click(activeTab);
+
+        expect(screen.getAllByTestId('todo-item').length).toEqual(2);
+      });
+
+
+      it('show summary information', async () => {
+        render(<Todo items={items}/>);
+
+        const todoItems = screen.getAllByTestId('todo-item');
+        expect(todoItems.length).toEqual(items.length);
+
+        const activeTab = screen.getByTestId('todo-active');
+        await userEvent.click(activeTab);
+
+        const totalTab = screen.getByTestId('todo-total');
+        await userEvent.click(totalTab);
+
+        const completedTab = screen.getByTestId('todo-completed');
+        await userEvent.click(completedTab);
+
+        expect(within(activeTab).getByText('2')).toBeInTheDocument();
+        expect(within(totalTab).getByText('3')).toBeInTheDocument();
+        expect(within(completedTab).getByText('1')).toBeInTheDocument();
+      });
+});
+
+describe('Search', () => {
+  it('search by keyword', async () => {
     render(<Todo items={items}/>);
 
-    const todoItems = screen.getAllByTestId('todo-item');
-    expect(todoItems.length).toEqual(items.length);
+    const searchInput = screen.getByTestId('todo-search');
+    await userEvent.type(searchInput, 'buy');
 
-    const completedTab = screen.getByTestId('todo-completed');
-    await userEvent.click(completedTab);
-
+    expect(screen.getByText('buy some milk')).toBeInTheDocument();
+    expect(screen.queryByText('walk the dog')).not.toBeInTheDocument();
+    expect(screen.queryByText('do homework')).not.toBeInTheDocument();
     expect(screen.getAllByTestId('todo-item').length).toEqual(1);
   });
 
-  it('switches between groups of items', async () => {
-    render(<Todo items={items}/>);
-
-    const todoItems = screen.getAllByTestId('todo-item');
-    expect(todoItems.length).toEqual(items.length);
-
-    const totalTab = screen.getByTestId('todo-total');
-    await userEvent.click(totalTab);
-  
-    expect(screen.getAllByTestId('todo-item').length).toEqual(3);
-  });
-
-  it('renders active tab', async () => {
-    render(<Todo items={items}/>);
-
-    const activeTab = screen.getByTestId('todo-active');
-    await userEvent.click(activeTab);
-
-    expect(screen.getAllByTestId('todo-item').length).toEqual(2);
-  });
-
-
-  it('show summary information', async () => {
-    render(<Todo items={items}/>);
-
-    const todoItems = screen.getAllByTestId('todo-item');
-    expect(todoItems.length).toEqual(items.length);
-
-    const activeTab = screen.getByTestId('todo-active');
-    await userEvent.click(activeTab);
-
-    const totalTab = screen.getByTestId('todo-total');
-    await userEvent.click(totalTab);
-
-    const completedTab = screen.getByTestId('todo-completed');
-    await userEvent.click(completedTab);
-
-    expect(within(activeTab).getByText('2')).toBeInTheDocument();
-    expect(within(totalTab).getByText('3')).toBeInTheDocument();
-    expect(within(completedTab).getByText('1')).toBeInTheDocument();
-  });
 });
+
+
