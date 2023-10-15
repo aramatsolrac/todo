@@ -72,3 +72,39 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
+
+.categories-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.categories-container .button {
+    padding: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.categories-container .button.active {
+    background-color: lightyellow
+}
+
+.categories-container .button.total {
+    background-color: lightcyan;
+}
+
+.categories-container .button.completed {
+    background-color: lightpink;
+}
+
+
+.categories-container .button:hover {
+    background-color: #f5f5f5;
+}
