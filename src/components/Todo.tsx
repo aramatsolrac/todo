@@ -14,6 +14,7 @@ const Todo = ({ items }: { items?: TodoType[]; }) => {
         deleteItem,
         setCategory,
         categories,
+        favoriteItem,
         search } = useTodos(items);
 
     const { total, active, completed } = categories;
@@ -30,6 +31,7 @@ const Todo = ({ items }: { items?: TodoType[]; }) => {
             <TodoList
                 todos={displayTodos}
                 onToggleItem={toggleItem}
+                onFavoriteItem={favoriteItem}
                 onDeleteItem={deleteItem} />
 
         </div>

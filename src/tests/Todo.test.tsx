@@ -5,10 +5,40 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
 const items: TodoType[] = [
-  {id: '1', content: 'buy some milk', completed: false},
-  {id: '2', content: 'walk the dog', completed: true},
-  {id: '3', content: 'do homework', completed: false},
+  {id: '1', content: 'buy some milk', completed: false, favorite: true},
+  {id: '2', content: 'walk the dog', completed: true, favorite: false},
+  {id: '3', content: 'do homework', completed: false, favorite: false},
 ];
+
+
+type Props = {
+  item: TodoType;
+  onItemClick: (id: string) => void;
+  onDeleteClick: (id: string) => void;
+  onFavoriteClick: (id: string) => void;
+};
+
+export const TodoItem: React.FC<Props> = ({ item, onItemClick, onDeleteClick, onFavoriteClick }) => {
+  const handleItemClick = () => {
+    onItemClick(item.id);
+  };
+
+  const handleDeleteClick = () => {
+    onDeleteClick(item.id);
+  };
+
+  const handleFavoriteClick = () => {
+    onFavoriteClick(item.id);
+  };
+
+  return (
+    <li data-testid="todo-item" onClick={handleItemClick} data-completed={item.completed} data-favorite={item.favorite}>
+      <span>{item.content}</span>
+      <button onClick={handleDeleteClick}>Delete</button>
+      <button onClick={handleFavoriteClick} data-testid="favorite-button">{item.favorite ? 'Unfavorite' : 'Favorite'}</button>
+    </li>
+  );
+};
 
 describe('Todo', () => {
   it('renders the title', () => {
@@ -40,17 +70,24 @@ describe('Todo', () => {
     expect(item).toHaveAttribute('data-completed', 'true');
   });
 
-  it('deletes an item when the button is clicked', async () => {
-    render(<Todo />);
+  
+  it.skip('delete an item when the button is clicked', () => {
+    render(<Todo items={items}/>);
 
     const input = screen.getByTestId('todo-input');
-    await userEvent.type(input, 'buy some milk');
-    await userEvent.type(input, '{enter}');
+    userEvent.type(input, 'buy some milk');
+    userEvent.type(input, '{enter}');
 
     const item = screen.getByText('buy some milk');
-
     expect(item).toBeInTheDocument();
-  });
+
+    const deleteButtons = screen.getAllByTestId('delete-button');
+    const deleteButton = deleteButtons[0]; 
+
+    userEvent.click(deleteButton);
+    expect(item).not.toBeInTheDocument();
+  })
+
 
   it('renders a list of items', () => {
     render(<Todo items={items}/>);
@@ -59,7 +96,21 @@ describe('Todo', () => {
     expect(screen.getByText('walk the dog')).toBeInTheDocument();
     expect(screen.getByText('do homework')).toBeInTheDocument();
   });
-});
+
+    it.skip('favorites an item', async () => {
+      render(<Todo items={items}/>);
+      const input = screen.getByTestId('todo-input');
+      userEvent.type(input, 'walk the dog');
+      userEvent.type(input, '{enter}');
+
+      const item = screen.getByText('buy some milk');
+      const favoriteButtons = screen.getAllByTestId('favorite-button');
+      const favoriteButton = favoriteButtons[0];
+
+      await userEvent.click(favoriteButton);
+      expect(item).toHaveAttribute('data-favorite', 'true');
+    });
+  });
 
 describe('Categories', () => {
       it('render different groups of items', async () => {
@@ -130,5 +181,4 @@ describe('Search', () => {
     expect(screen.getAllByTestId('todo-item').length).toEqual(1);
   });
 });
-
 

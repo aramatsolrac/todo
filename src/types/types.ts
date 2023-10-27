@@ -5,6 +5,7 @@ import { Category } from "../components/Category";
  * Represents a todo item.
  */
 export interface TodoType {
+    favorite?: any;
     id: string;
     content: string;
     completed: boolean;
@@ -38,6 +39,7 @@ export interface TodoListProps {
      */
     onToggleItem: (id: string) => void;
     onDeleteItem: (todo: TodoType) => void;
+    onFavoriteItem: (todo: TodoType) => void;
 }
 
 

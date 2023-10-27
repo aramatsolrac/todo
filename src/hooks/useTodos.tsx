@@ -61,6 +61,17 @@ const useTodos = (items: TodoType[] = []) => {
         setQuery(query);
     }
 
+    const favoriteItem = (todo: TodoType) => {
+        const updatedTodos = todos.map(item => {
+            if (item.id === todo.id) {
+                return {...todo, favorite: !todo.favorite};
+            }
+            console.log(item);
+            return item;
+        });
+        setTodos(updatedTodos);
+    }
+
     return {
         displayTodos,
         addTodo,
@@ -68,7 +79,8 @@ const useTodos = (items: TodoType[] = []) => {
         deleteItem,
         setCategory,
         categories,
-        search
+        search,
+        favoriteItem
     };
 }
 
